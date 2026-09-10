@@ -28,6 +28,18 @@ variable "storage_account_replication_type" {
   default     = "LRS"
 }
 
+variable "raw_cost_input_container_name" {
+  type        = string
+  description = "Name of the storage container for raw cost input data."
+  default     = "raw-cost-input"
+}
+
+variable "finopsiq_results_container_name" {
+  type        = string
+  description = "Name of the storage container for FinOpsIQ results."
+  default     = "finopsiq-results"
+}
+
 variable "app_insights_name" {
   type        = string
   description = "Name of the Application Insights resource."

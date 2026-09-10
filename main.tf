@@ -19,7 +19,20 @@ resource "azurerm_storage_account" "sa" {
   account_tier             = var.storage_account_tier
   account_replication_type = var.storage_account_replication_type
 
-  min_tls_version          = "TLS1_2"
+  min_tls_version = "TLS1_2"
+}
+
+# Storage containers
+resource "azurerm_storage_container" "raw_cost_input" {
+  name                  = var.raw_cost_input_container_name
+  storage_account_name  = azurerm_storage_account.sa.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "finopsiq_results" {
+  name                  = var.finopsiq_results_container_name
+  storage_account_name  = azurerm_storage_account.sa.name
+  container_access_type = "private"
 }
 
 # Log Analytics Workspace
