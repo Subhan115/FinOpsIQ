@@ -22,10 +22,15 @@ class CostReportError(Exception):
     """Raised when an Azure cost report cannot be read or validated."""
 
 
-DATE_COLUMNS = ("date", "servicePeriodStartDate", "billingPeriodStartDate")
-COST_COLUMNS = ("costInBillingCurrency", "costInPricingCurrency", "costInUsd")
-SUBSCRIPTION_COLUMNS = ("SubscriptionId", "subscriptionId", "subscriptionName")
-SERVICE_COLUMNS = ("consumedService", "serviceName", "serviceFamily")
+DATE_COLUMNS = ("date", "serviceperiodstartdate", "billingperiodstartdate")
+COST_COLUMNS = (
+    "costinbillingcurrency",
+    "costinpricingcurrency",
+    "costinusd",
+    "cost",
+)
+SUBSCRIPTION_COLUMNS = ("subscriptionid", "subscriptionname")
+SERVICE_COLUMNS = ("consumedservice", "servicename", "servicefamily")
 
 
 def _normalise(value: Any) -> str:
@@ -110,7 +115,7 @@ def _read_rows(path: Path) -> tuple[list[str], Iterable[tuple[int, dict[str, str
         if not reader.fieldnames:
             raise CostReportError("CSV file is empty or has no header row")
 
-        fieldnames = [name.strip() for name in reader.fieldnames if name]
+        fieldnames = [name.strip().casefold() for name in reader.fieldnames if name]
         if not fieldnames:
             raise CostReportError("CSV header contains no usable column names")
 
@@ -125,7 +130,7 @@ def _read_rows(path: Path) -> tuple[list[str], Iterable[tuple[int, dict[str, str
                             f"Malformed CSV row {row_number}: too many columns"
                         )
                     yield row_number, {
-                        _normalise(key): _normalise(value)
+                        _normalise(key).casefold(): _normalise(value)
                         for key, value in row.items()
                         if key is not None
                     }
@@ -195,8 +200,8 @@ def parse_cost_management_report(file_path: str | Path) -> dict[str, Any]:
         if service:
             services.add(service)
         if not currency:
-            currency = _normalise(row.get("billingCurrency")) or _normalise(
-                row.get("pricingCurrency")
+            currency = _normalise(row.get("billingcurrency")) or _normalise(
+                row.get("pricingcurrency")
             )
 
     result = {
