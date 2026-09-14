@@ -1,76 +1,17 @@
-# ==============================================================================
-# .gitignore for Terraform & Python Projects
-# ==============================================================================
-
-# ------------------------------------------------------------------------------
-# Terraform / OpenTofu
-# ------------------------------------------------------------------------------
-# Local .terraform directories containing provider binaries and module sources
-**/.terraform/
-
-# Terraform state files contain sensitive data (passwords, private keys, secrets)
+# Terraform local state and working directories
+.terraform/
 *.tfstate
-*.tfstate.*
 *.tfstate.backup
+.terraform.lock.hcl
 
-# Crash logs
-crash.log
-crash.*.log
-
-# Exclude sensitive var files containing credentials/secrets
-*.tfvars
-*.tfvars.json
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-
-# CLI configuration files
-.terraformrc
-terraform.rc
-
-# ------------------------------------------------------------------------------
-# Python & Virtual Environments
-# ------------------------------------------------------------------------------
-# Byte-compiled / optimized / DLL files
+# Python cache and bytecode
 __pycache__/
 *.py[cod]
-*$py.class
 
-# C extensions
-*.so
-
-# Distribution / packaging
-build/
-dist/
-*.egg-info/
-*.egg
-
-# Virtual environments
-.venv/
-venv/
-env/
-
-# ------------------------------------------------------------------------------
-# Testing & Code Quality Tools
-# ------------------------------------------------------------------------------
-.pytest_cache/
-.coverage
-htmlcov/
-.mypy_cache/
-.ruff_cache/
-
-# ------------------------------------------------------------------------------
-# Local Execution Flags & Logs
-# ------------------------------------------------------------------------------
+# Temporary trigger/validation flag files
 .validate_trigger
 .validation_done
-*.log
 
-# ------------------------------------------------------------------------------
-# OS & IDE Generated Files
-# ------------------------------------------------------------------------------
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
+# Local data CSVs (except FinOpsIQ demo data)
+*.csv
+!finopsiq-demo-costs-spike*.csv

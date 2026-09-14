@@ -15,6 +15,9 @@ from typing import Any, Mapping, Sequence
 from csv_parser import CostReportError, parse_cost_records
 
 
+DEFAULT_THRESHOLD_PERCENT = Decimal("50")
+DEFAULT_BASELINE_WINDOW_DAYS = 7
+
 def _group_daily_costs(
     records: Sequence[Mapping[str, Any]],
 ) -> dict[str, dict[date, Decimal]]:
@@ -192,8 +195,12 @@ def _evaluate_subscription(
 
 def detect_spikes(
     records: Sequence[Mapping[str, Any]],
-    threshold_percent: int | float | Decimal = 50,
-    baseline_window_days: int = 7,
+    threshold_percent: int | float | Decimal = (
+        DEFAULT_THRESHOLD_PERCENT
+    ),
+    baseline_window_days: int = (
+        DEFAULT_BASELINE_WINDOW_DAYS
+    ),
 ) -> list[dict[str, Any]]:
     """Detect spikes for every subscription in normalized records."""
     if baseline_window_days < 1:
